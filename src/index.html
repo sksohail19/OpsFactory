@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps File Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>DevOps File Generator</h1>
+            <p>Generate configuration files for your DevOps workflows</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="success-message" id="successMessage">
+            File generated successfully and copied to clipboard!
+        </div>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <h2>File Types</h2>
+                <ul class="file-type-list" id="fileTypeList">
+                    <li class="active" data-type="docker">Dockerfile</li>
+                    <li data-type="github-actions">GitHub Actions Workflow</li>
+                    <li data-type="jenkins">Jenkinsfile</li>
+                    <li data-type="kubernetes">Kubernetes Deployment</li>
+                    <li data-type="docker-compose">Docker Compose</li>
+                    <li data-type="terraform">Terraform Configuration</li>
+                    <li data-type="ansible">Ansible Playbook</li>
+                    <li data-type="nginx">Nginx Configuration</li>
+                </ul>
+            </div>
+            
+            <div class="content">
+                <div class="form-container" id="dockerForm">
+                    <h2>Generate Dockerfile</h2>
+                    
+                    <div class="form-group">
+                        <label for="baseImage">Base Image</label>
+                        <select id="baseImage" class="form-control">
+                            <option value="node:16-alpine">Node.js 16 Alpine</option>
+                            <option value="node:18-alpine">Node.js 18 Alpine</option>
+                            <option value="python:3.9-slim">Python 3.9 Slim</option>
+                            <option value="python:3.10-slim">Python 3.10 Slim</option>
+                            <option value="php:8.1-apache">PHP 8.1 Apache</option>
+                            <option value="nginx:alpine">Nginx Alpine</option>
+                            <option value="ubuntu:22.04">Ubuntu 22.04</option>
+                            <option value="golang:1.19-alpine">Golang 1.19 Alpine</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="workDir">Working Directory</label>
+                        <input type="text" id="workDir" placeholder="/app" value="/app">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="copyCommand">Copy Command</label>
+                        <input type="text" id="copyCommand" placeholder="COPY . ." value="COPY . .">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="runCommands">Run Commands (one per line)</label>
+                        <textarea id="runCommands" placeholder="npm install&#10;npm run build"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="exposePort">Expose Port</label>
+                        <input type="number" id="exposePort" placeholder="3000" value="3000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cmdCommand">CMD Command</label>
+                        <input type="text" id="cmdCommand" placeholder='["npm", "start"]' value='["npm", "start"]'>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn" id="generateBtn">Generate Dockerfile</button>
+                        <button class="btn btn-secondary" id="copyBtn">Copy to Clipboard</button>
+                        <button class="btn btn-secondary" id="downloadBtn">Download File</button>
+                    </div>
+                </div>
+                
+                <div class="output-container">
+                    <h3>Generated Output</h3>
+                    <textarea id="fileOutput" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
