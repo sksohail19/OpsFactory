@@ -1,0 +1,31 @@
+.holder {
+  width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.data {
+  width: 48%;
+  margin: 0 auto;
+}
+
+.result {
+  width: 48%;
+}
+
+.preview textarea {
+  width: 100%;
+  height: 400px;
+}
+
+.command-list p {
+  margin: 0;
+}
+.command-list {
+  width: 100%;
+  height: 400px;
+  overflow-y: auto;
+}
