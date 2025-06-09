@@ -5,17 +5,133 @@ export default function Docker({ mode }) {
   const bgColor = mode === "dark" ? "bg-dark" : "bg-light";
   const textColor = mode === "dark" ? "text-light" : "text-dark";
 
+  const [title, setTitle] = useState("");
+  const [applicationName, setApplicationName] = useState("");
+  const [baseImage, setBaseImage] = useState("");
+  const [ports, setPorts] = useState("");
+  const [volumes, setVolumes] = useState("");
+  const [healthCheck, setHealthCheck] = useState("");
+  const [healthCheckPath, setHealthCheckPath] = useState("");
+  const [healthCheckPort, setHealthCheckPort] = useState("");
+  const [interval, setInterval] = useState("");
+  const [timeout, setTimeout] = useState("");
+  const [retries, setRetries] = useState("");
+  const [startPeriod, setStartPeriod] = useState("");
+  const [disable, setDisable] = useState("");
+  const [memory, setMemory] = useState("");
+  const [cpu, setCpu] = useState("");
+  
   const [envVars, setEnvVars] = useState([""]);
   const [args, setArgs] = useState([{ name: "", value: "" }]);
   const [cmds, setCmds] = useState([""]);
   const [stages, setStages] = useState([{ name: "", baseImage: "", workdir: "", copycmd: "", runcmd: "" }]);
   const [dockerfileContent, setDockerfileContent] = useState("");
 
+
+  const handleCopy = () => {
+  navigator.clipboard.writeText(dockerfileContent).then(() => {
+    alert("Dockerfile content copied to clipboard!");
+  });
+};
+
+const handleDownload = () => {
+  const blob = new Blob([dockerfileContent], { type: "text/plain;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "Dockerfile";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Dockerfile generation logic goes here
-    setDockerfileContent("FROM ");
-  };
+  e.preventDefault();
+
+  let dockerfile = "";
+
+  // Title as comment
+  if (title) dockerfile += `# ${title}\n`;
+
+  // Basic Base Image
+  if (baseImage) dockerfile += `FROM ${baseImage} AS base\n`;
+
+  // Stages
+  stages.forEach((stage, index) => {
+    if (stage.baseImage) {
+      dockerfile += `\nFROM ${stage.baseImage} AS ${stage.name || `stage${index}`}\n`;
+      if (stage.workdir) dockerfile += `WORKDIR ${stage.workdir}\n`;
+      if (stage.copycmd) dockerfile += `COPY ${stage.copycmd}\n`;
+      if (stage.runcmd) dockerfile += `RUN ${stage.runcmd}\n`;
+    }
+  });
+
+  // Arguments
+  if (args.length > 0) {
+    args.forEach((arg) => {
+      if (arg.name) {
+        dockerfile += `ARG ${arg.name}${arg.value ? `=${arg.value}` : ""}\n`;
+      }
+    });
+  }
+
+  // Environment Variables
+  if (envVars.length > 0) {
+    envVars.forEach((env) => {
+      if (env) dockerfile += `ENV ${env}\n`;
+    });
+  }
+
+  // Application workdir
+  if (applicationName) {
+    dockerfile += `WORKDIR /app/${applicationName}\n`;
+  }
+
+  // Ports
+  if (ports) {
+    ports.split(",").forEach((p) => {
+      dockerfile += `EXPOSE ${p.trim()}\n`;
+    });
+  }
+
+  // Volumes
+  if (volumes) {
+    volumes.split(",").forEach((v) => {
+      dockerfile += `VOLUME ${v.trim()}\n`;
+    });
+  }
+
+  // CMD
+  if (cmds.length > 0) {
+    dockerfile += `CMD [${cmds.map((cmd) => `"${cmd}"`).join(", ")}]\n`;
+  }
+
+  // Healthcheck
+  if (healthCheck || healthCheckPath || healthCheckPort) {
+    dockerfile += `\nHEALTHCHECK `;
+    if (disable === "true") {
+      dockerfile += `NONE\n`;
+    } else {
+      const options = [];
+      if (interval) options.push(`--interval=${interval}`);
+      if (timeout) options.push(`--timeout=${timeout}`);
+      if (startPeriod) options.push(`--start-period=${startPeriod}`);
+      if (retries) options.push(`--retries=${retries}`);
+      dockerfile += `${options.join(" ")} CMD `;
+      if (healthCheck) {
+        dockerfile += `${healthCheck}\n`;
+      } else if (healthCheckPath && healthCheckPort) {
+        dockerfile += `curl -f http://localhost:${healthCheckPort}${healthCheckPath} || exit 1\n`;
+      }
+    }
+  }
+
+  // Resource Limits (comments since Dockerfile doesn't support limits directly)
+  if (memory) dockerfile += `# Memory Limit: ${memory}\n`;
+  if (cpu) dockerfile += `# CPU Limit: ${cpu}\n`;
+
+  setDockerfileContent(dockerfile);
+};
+
 
   const updateEnvVar = (index, value) => {
     const updated = [...envVars];
@@ -278,6 +394,15 @@ export default function Docker({ mode }) {
             value={dockerfileContent}
             readOnly
           />
+        </div>
+
+        <div className="text-center mt-3 mb-3">
+          <button type="button" onClick={handleCopy} className="btn btn-outline-secondary me-2">
+            📋 Copy to Clipboard
+          </button>
+          <button type="button" onClick={handleDownload} className="btn btn-outline-success">
+            ⬇️ Download Dockerfile
+          </button>
         </div>
 
         <div className="commands">
