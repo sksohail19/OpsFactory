@@ -1,0 +1,117 @@
+.holder {
+  width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.data {
+  width: 48%;
+  margin: 0 auto;
+}
+
+.result {
+  width: 48%;
+}
+
+.preview textarea {
+  width: 100%;
+  height: 400px;
+}
+
+.command-list p {
+  margin: 0;
+}
+.command-list {
+  width: 100%;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.heading {
+  width: 100%;
+  text-align: center;
+}
+
+.docker-features {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 100px;
+  width: 100%;
+}
+
+.dockercompose img{
+  width: 200px;
+  height: auto;
+}
+
+.horizontal {
+  width: 100%;
+  height: 1px;
+  background-color: #b4b3b3;
+  margin: 20px 0;
+}
+
+.docker-features figcaption {
+  text-align: center;
+  font-size: 20px;
+  color: #333;
+}
+
+
+.differences h3 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.differences { 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 830px;
+  margin: 0 auto ;
+}
+
+.workflow {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 500px;
+  margin: 0 auto;
+}
+
+
+.workflow h3 {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.preview {
+  background-color: #f8f9fa; /* Slightly off-white for contrast */
+  color: #212529; /* Dark text for readability */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+  min-height: 200px;
+  margin: 20px 0;
+  padding: 20px;
+  overflow-x: auto; /* Scroll for long lines */
+  font-family: monospace; /* YAML-like font */
+  font-size: 0.95rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
