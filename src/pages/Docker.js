@@ -232,9 +232,16 @@ const handleDownload = () => {
                         value={stage.runcmd || ""}
                         onChange={(e) => updateStage(i, "runcmd", e.target.value)}
                       />
-                      <button type="button" onClick={() => removeStage(i)} className="btn btn-sm btn-danger">
-                        Remove Stage
-                      </button>
+                      {i > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => removeStage(i)}
+                          className="btn btn-sm btn-danger mt-2"
+                        >
+                          - Remove Stage
+                        </button>
+                      )}
+
                     </div>
                   ))}
                   <button type="button" onClick={addStage} className="btn btn-sm btn-secondary mt-2">
@@ -408,8 +415,15 @@ const handleDownload = () => {
         <div className="commands">
           <h3 className={`text-center ${textColor}`}>Commands</h3>
           <div className="command-list">
-            <p className={textColor}>docker build -t your-image-name .</p>
-            <p className={textColor}>docker run -d -p 80:80 your-image-name</p>
+            <p className={textColor}>
+              docker build -t {applicationName || "your-image-name"} .
+            </p>
+            <p className={textColor}>
+              docker run -d
+              {ports && ports.split(',').map((p, i) => (
+                <span key={i}> -p {p.trim()}:{p.trim()}</span>
+              ))} {applicationName || "your-image-name"}
+            </p>
           </div>
         </div>
       </div>
