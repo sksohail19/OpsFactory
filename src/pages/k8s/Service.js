@@ -1,4 +1,3 @@
-import { LabelImportantOutlineSharp } from '@mui/icons-material';
 import React, { useState } from 'react';
 
 function Service() {
@@ -40,6 +39,38 @@ const [IPFamilyPolicy, setIPFamilyPolicy] = useState("");
 const [IPv4, setIPv4] = useState(true);
 const [IPv6, setIPv6] = useState(false);
 const [loadBalancer, setLoadBalancer] = useState("");
+
+const serviceYaml = `
+apiVersion: ${api}
+kind: ${kind}
+metadata:
+  name: ${name}
+  namespace: ${namespace}
+  labels:
+    app: ${labels.app}
+    env: ${labels.env}
+    tier: ${labels.tier}
+  annotations:
+    ${annotations.key}: "${annotations.value}"
+spec:
+  type: ${specifications.type}
+  selector:
+    app: ${specifications.selector.app}
+  ports:
+    - name: ${specifications.ports[0].name}
+      protocol: ${specifications.ports[0].protocol}
+      port: ${specifications.ports[0].port}
+      targetPort: ${specifications.ports[0].targetPort}
+  sessionAffinity: ${sessionAffinity}
+  ipFamilyPolicy: ${IPFamilyPolicy}
+  ipFamilies:
+    ${IPv4 ? '- IPv4' : ''}
+    ${IPv6 ? '- IPv6' : ''}
+${externalIPs.length > 0 ? `  externalIPs:\n${externalIPs.map(ip => `    - ${ip}`).join('\n')}` : ''}
+${loadBalancer ? `  loadBalancerClass: ${loadBalancer}` : ''}
+`;
+
+
 
 
   return (
@@ -596,7 +627,7 @@ const [loadBalancer, setLoadBalancer] = useState("");
         <textarea
           className="form-control"
           rows="20"
-          
+          value={serviceYaml}
           readOnly
         ></textarea>
       </div>
