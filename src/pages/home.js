@@ -34,7 +34,7 @@ function Home({ mode }) {
               alt="Kubernetes logo"
             />
             <p className={themeClass}>Kubernetes</p><br />
-            <Link to="/features/kubernetes" className={`cta-button custom-link nav-link ${themeClass}`}>Explore</Link>
+            <Link to="/features/k8s" className={`cta-button custom-link nav-link ${themeClass}`}>Explore</Link>
           </div>
 
           <div className="feature">
