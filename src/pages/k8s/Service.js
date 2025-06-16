@@ -1,3 +1,4 @@
+import { LabelImportantOutlineSharp } from '@mui/icons-material';
 import React, { useState } from 'react';
 
 function Service() {
@@ -26,7 +27,19 @@ const handleDownload = () => {
 };
 
 const [api, setAPI] = useState("");
-
+const [kind, setKind] = useState("");
+const [name, setName] = useState("");
+const [namespace, setNamespace] = useState("");
+const [labels, setLabels] = useState({ app: "", env: "", tier: "" });
+const [annotations, setAnnotations] = useState({key: "", value: ""});
+const [specifications, setSpec] = useState({ type: "", selector: { app: "" }, ports: [{ port:"" , protocol: "", targetPort: "", name:"" }] });
+const [externalIPs, setExternalIPs] = useState([]);
+const [externalIPPolicy, setExternalIPPolicy] = useState("");
+const [sessionAffinity, setSessionAffinity] = useState("");
+const [IPFamilyPolicy, setIPFamilyPolicy] = useState("");
+const [IPv4, setIPv4] = useState(true);
+const [IPv6, setIPv6] = useState(false);
+const [loadBalancer, setLoadBalancer] = useState("");
 
 
   return (
@@ -47,9 +60,9 @@ const [api, setAPI] = useState("");
           <div id="collapseOne" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
             <div className="accordion-body">
               <strong>API Version</strong>
-              <input type="text" className="form-control mb-3" value={setAPI} placeholder="v1" />
+              <input type="text" className="form-control mb-3" value={api} onChange={(e) => setAPI(e.target.value)} placeholder="v1" />
               <strong>Kind</strong>
-              <input type="text" className="form-control mb-3" placeholder="Service" readOnly />
+              <input type="text" className="form-control mb-3" placeholder="Service" value={kind} onChange={(e) => setKind(e.target.value)} readOnly />
               <strong>Type</strong>
               <select className="form-select mb-3 select-type" value={selectType} onChange={handleSelectChange}>
                 <option value="ClusterIP">ClusterIP</option>
@@ -69,9 +82,9 @@ const [api, setAPI] = useState("");
                     <div id="collapseMetaData" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                       <div className="accordion-body">
                         <strong>Name</strong>
-                        <input type="text" className="form-control mb-3" placeholder="my-service" />
+                        <input type="text" className="form-control mb-3" placeholder="my-service" value={name}  onChange={(e) => setName(e.target.value)}/>
                         <strong>Namespace</strong>
-                        <input type="text" className="form-control mb-3" placeholder="default" readOnly />
+                        <input type="text" className="form-control mb-3" placeholder="default" value={namespace} onChange={(e) => setNamespace(e.target.value)} readOnly />
 
                         {/* Labels */}
                         <div className="accordion-item">
@@ -83,9 +96,9 @@ const [api, setAPI] = useState("");
                           <div id="collapseLabels" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>App Name</strong>
-                              <input type="text" className="form-control mb-3" placeholder="my-app" />
+                              <input type="text" className="form-control mb-3" placeholder="my-app" value={labels.app} onChange={(e) => setLabels({ ...labels, app: e.target.value })} />
                               <strong>Environment</strong>
-                              <input type="text" className="form-control mb-3" placeholder="production" />
+                              <input type="text" className="form-control mb-3" placeholder="production" value={labels.env} onChange={(e) => setLabels({ ...labels, env: e.target.value })}/>
                             </div>
                           </div>
                         </div>
@@ -100,9 +113,9 @@ const [api, setAPI] = useState("");
                           <div id="collapseAnnotations1" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Key</strong>
-                              <input type="text" className="form-control mb-3" placeholder="key" />
+                              <input type="text" className="form-control mb-3" placeholder="key" value={annotations.key} onChange={(e) => setAnnotations({ ...annotations, key: e.target.value })}/>
                               <strong>Value</strong>
-                              <input type="text" className="form-control mb-3" placeholder="value" />
+                              <input type="text" className="form-control mb-3" placeholder="value" value={annotations.value} onChange={(e) => setAnnotations({ ...annotations, value: e.target.value })} />
                             </div>
                           </div>
                         </div>
@@ -117,7 +130,7 @@ const [api, setAPI] = useState("");
                           <div id="collapseSpecifications" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Type</strong>
-                              <input type="text" className="form-control mb-3" placeholder="ClusterIP" readOnly />
+                              <input type="text" className="form-control mb-3" placeholder="ClusterIP" value={specifications.type} onChange={(e) => setSpec({ ...specifications, type: e.target.value })} readOnly />
 
                               {/* Selector */}
                               <div className="accordion-item">
@@ -129,7 +142,7 @@ const [api, setAPI] = useState("");
                                 <div id="collapseSelector" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                   <div className="accordion-body">
                                     <strong>Name</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="my-app" />
+                                    <input type="text" className="form-control mb-3" placeholder="my-app" value={specifications.selector.name} onChange={(e) => setSpec({ ...specifications, selector: { ...specifications.selector, name: e.target.value } })} />
                                   </div>
                                 </div>
                               </div>
@@ -144,13 +157,13 @@ const [api, setAPI] = useState("");
                                 <div id="collapsePorts" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                   <div className="accordion-body">
                                     <strong>Name</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="http" />
+                                    <input type="text" className="form-control mb-3" placeholder="http" value={specifications.ports.name} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, name: e.target.value } })} />
                                     <strong>Protocol</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="TCP" />
+                                    <input type="text" className="form-control mb-3" placeholder="TCP" value={specifications.ports.protocol} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, protocol: e.target.value } })}/>
                                     <strong>Port</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="80" />
+                                    <input type="text" className="form-control mb-3" placeholder="80" value={specifications.ports.port} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, port: e.target.value } })}/>
                                     <strong>Target Port</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="8080" />
+                                    <input type="text" className="form-control mb-3" placeholder="8080" value={specifications.ports.targetPort} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, targetPort: e.target.value } })} />
                                   </div>
                                 </div>
                               </div>
@@ -168,12 +181,12 @@ const [api, setAPI] = useState("");
                           <div id="collapseAdvanced" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Session Affinity</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={sessionAffinity} onChange={(e) => setSessionAffinity(e.target.value)}>
                                 <option value="None">None</option>
                                 <option value="ClientIP">ClientIP</option>
                               </select>
                               <strong>IP Family Policy</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={IPFamilyPolicy} onChange={(e) => setIPFamilyPolicy(e.target.value)}>
                                 <option value="SingleStack">SingleStack</option>
                                 <option value="PreferDualStack">PreferDualStack</option>
                                 <option value="RequireDualStack">RequireDualStack</option>
@@ -186,8 +199,10 @@ const [api, setAPI] = useState("");
                                     type="checkbox"
                                     className="form-check-input"
                                     id="ipv4"
-                                    value="IPv4"
+                                    value= {IPv4}
+                                    checked
                                     defaultChecked
+                                    onChange = {(e) => setIPv4(e.target.checked)}
                                   />
                                   <label className="form-check-label" htmlFor="ipv4">
                                     IPv4
@@ -199,6 +214,7 @@ const [api, setAPI] = useState("");
                                     className="form-check-input"
                                     id="ipv6"
                                     value="IPv6"
+                                    onChange={(e) => setIPv6(e.target.checked)}
                                   />
                                   <label className="form-check-label" htmlFor="ipv6">
                                     IPv6
@@ -231,9 +247,9 @@ const [api, setAPI] = useState("");
                     <div id="collapseMetaData" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                       <div className="accordion-body">
                         <strong>Name</strong>
-                        <input type="text" className="form-control mb-3" placeholder="my-service" />
+                        <input type="text" className="form-control mb-3" placeholder="my-service" value={name} onChange={(e) => setName(e.target.value)}/>
                         <strong>Namespace</strong>
-                        <input type="text" className="form-control mb-3" placeholder="default" readOnly />
+                        <input type="text" className="form-control mb-3" placeholder="default" value={namespace} onChange={(e) => setNamespace(e.target.value)}  readOnly />
 
                         {/* Labels */}
                         <div className="accordion-item">
@@ -245,11 +261,11 @@ const [api, setAPI] = useState("");
                           <div id="collapseLabels" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>App Name</strong>
-                              <input type="text" className="form-control mb-3" placeholder="my-app" />
+                              <input type="text" className="form-control mb-3" placeholder="my-app" value={labels.app} onChange={(e) => setLabels({ ...labels, app: e.target.value }) }  />
                               <strong>Environment</strong>
-                              <input type="text" className="form-control mb-3" placeholder="production" />
+                              <input type="text" className="form-control mb-3" placeholder="production" value={labels.env} onChange={(e) => setLabels({ ...labels, env: e.target.value }) } />
                               <strong>tier</strong>
-                              <input type="text" className="form-control mb-3" placeholder="backend" />
+                              <input type="text" className="form-control mb-3" placeholder="backend"  value={labels.tier} onChange={(e) => setLabels({ ...labels, tier: e.target.value })} />
                             </div>
                           </div>
                         </div>
@@ -264,9 +280,9 @@ const [api, setAPI] = useState("");
                           <div id="collapseAnnotations1" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Key</strong>
-                              <input type="text" className="form-control mb-3" placeholder="key" />
+                              <input type="text" className="form-control mb-3" placeholder="key" value={annotations.key} onChange={(e) => setAnnotations({ ...annotations, key: e.target.value })  } />
                               <strong>Value</strong>
-                              <input type="text" className="form-control mb-3" placeholder="value" />
+                              <input type="text" className="form-control mb-3" placeholder="value" value={annotations.value} onChange={(e) => setAnnotations({ ...annotations, value: e.target.value })} />
                             </div>
                           </div>
                         </div>
@@ -281,7 +297,7 @@ const [api, setAPI] = useState("");
                           <div id="collapseSpecifications" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Type</strong>
-                              <input type="text" className="form-control mb-3" placeholder="ClusterIP" readOnly />
+                              <input type="text" className="form-control mb-3" placeholder="ClusterIP" value={specifications.type} onChange={(e) => setSpec({ ...specifications, type: e.target.value })} readOnly />
 
                               {/* Selector */}
                               <div className="accordion-item">
@@ -293,7 +309,7 @@ const [api, setAPI] = useState("");
                                 <div id="collapseSelector" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                   <div className="accordion-body">
                                     <strong>Name</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="my-app" />
+                                    <input type="text" className="form-control mb-3" placeholder="my-app" value/>
                                   </div>
                                 </div>
                               </div>
@@ -308,13 +324,13 @@ const [api, setAPI] = useState("");
                                 <div id="collapsePorts" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                   <div className="accordion-body">
                                     <strong>Name</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="http" />
+                                    <input type="text" className="form-control mb-3" placeholder="http"  value={specifications.ports.app} onChange={(e) => setSpec({ ...specifications, ports: e.target.value })} />
                                     <strong>Protocol</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="TCP" />
+                                    <input type="text" className="form-control mb-3" placeholder="TCP" value={specifications.ports.protocol} onChange={(e) => setSpec({ ...specifications, ports: e.target.value })} />
                                     <strong>Port</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="80" />
+                                    <input type="text" className="form-control mb-3" placeholder="80" value={specifications.ports.port} onChange={(e) => setSpec({ ...specifications, ports: e.target.value })} />
                                     <strong>Target Port</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="8080" />
+                                    <input type="text" className="form-control mb-3" placeholder="8080" value={specifications.ports.targetPort} onChange={(e) => setSpec({ ...specifications, ports: e.target.value })} />
                                   </div>
                                 </div>
                               </div>
@@ -331,13 +347,20 @@ const [api, setAPI] = useState("");
                           </h2>
                           <div id="collapseAdvanced" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
+                              <strong>External IPs</strong>
+                              <input type="text" className="form-control mb-3" placeholder="1.2.3.4" value={externalIPs} onChange={(e) => setExternalIPs(e.target.value)} />
+                              <strong>External Traffic Policy</strong>
+                              <select className="form-select mb-3" value={externalIPPolicy} onChange={(e) => setExternalIPPolicy(e.target.value)} >
+                                <option value="Local">Local</option>
+                                <option value="Cluster">Cluster</option>
+                              </select>
                               <strong>Session Affinity</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={sessionAffinity} onChange={(e) => setSessionAffinity(e.target.value)}>
                                 <option value="None">None</option>
                                 <option value="ClientIP">ClientIP</option>
                               </select>
                               <strong>IP Family Policy</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={IPFamilyPolicy} onChange={(e) => setIPFamilyPolicy(e.target.value)}>
                                 <option value="SingleStack">SingleStack</option>
                                 <option value="PreferDualStack">PreferDualStack</option>
                                 <option value="RequireDualStack">RequireDualStack</option>
@@ -350,7 +373,8 @@ const [api, setAPI] = useState("");
                                     type="checkbox"
                                     className="form-check-input"
                                     id="ipv4"
-                                    value="IPv4"
+                                    value={IPv4}
+                                    onChange={(e) => setIPv4(e.target.checked)}
                                     defaultChecked
                                   />
                                   <label className="form-check-label" htmlFor="ipv4">
@@ -362,7 +386,8 @@ const [api, setAPI] = useState("");
                                     type="checkbox"
                                     className="form-check-input"
                                     id="ipv6"
-                                    value="IPv6"
+                                    value={IPv6}
+                                    onChange={(e) => setIPv6(e.target.checked)}
                                   />
                                   <label className="form-check-label" htmlFor="ipv6">
                                     IPv6
@@ -393,9 +418,9 @@ const [api, setAPI] = useState("");
                     <div id="collapseMetaData" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                       <div className="accordion-body">
                         <strong>Name</strong>
-                        <input type="text" className="form-control mb-3" placeholder="my-service" />
+                        <input type="text" className="form-control mb-3" placeholder="my-service" value={name} onChange={(e)=> setName(e.target.value)} />
                         <strong>Namespace</strong>
-                        <input type="text" className="form-control mb-3" placeholder="default" readOnly />
+                        <input type="text" className="form-control mb-3" placeholder="default" value={namespace} onChange={(e) => setNamespace(e.target.value)}  readOnly />
 
                         {/* Labels */}
                         <div className="accordion-item">
@@ -407,11 +432,11 @@ const [api, setAPI] = useState("");
                           <div id="collapseLabels" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>App Name</strong>
-                              <input type="text" className="form-control mb-3" placeholder="my-app" />
+                              <input type="text" className="form-control mb-3" placeholder="my-app" value={labels.app} onChange={(e) => setLabels({ ...labels, app: e.target.value })} />
                               <strong>Environment</strong>
-                              <input type="text" className="form-control mb-3" placeholder="production" />
+                              <input type="text" className="form-control mb-3" placeholder="production" value={labels.env} onChange={(e) => setLabels({ ...labels, env: e.target.value })} readOnly />
                               <strong>tier</strong>
-                              <input type="text" className="form-control mb-3" placeholder="public" />
+                              <input type="text" className="form-control mb-3" placeholder="public" value={labels.tier} onChange={(e) => setLabels({ ...labels, tier: e.target.value }) }/>
                             </div>
                           </div>
                         </div>
@@ -426,9 +451,9 @@ const [api, setAPI] = useState("");
                           <div id="collapseAnnotations1" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Key</strong>
-                              <input type="text" className="form-control mb-3" placeholder="key" />
+                              <input type="text" className="form-control mb-3" placeholder="key" value={annotations.key} onChange={(e) => setAnnotations({ ...annotations, key: e.target.value })} />
                               <strong>Value</strong>
-                              <input type="text" className="form-control mb-3" placeholder="value" />
+                              <input type="text" className="form-control mb-3" placeholder="value" value={annotations.value} onChange={(e) => setAnnotations({ ...annotations, value: e.target.value })} />
                             </div>
                           </div>
                         </div>
@@ -443,7 +468,7 @@ const [api, setAPI] = useState("");
                           <div id="collapseSpecifications" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Type</strong>
-                              <input type="text" className="form-control mb-3" placeholder="LoadBalancer" value="LoadBalancer" readOnly />
+                              <input type="text" className="form-control mb-3" placeholder="LoadBalancer" value="LoadBalancer" value={specifications.type} onChange={(e) => setSpec({ ...specifications, type: e.target.value })}  readOnly />
 
                               {/* Selector */}
                               <div className="accordion-item">
@@ -455,7 +480,7 @@ const [api, setAPI] = useState("");
                                 <div id="collapseSelector" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                   <div className="accordion-body">
                                     <strong>Name</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="my-app" />
+                                    <input type="text" className="form-control mb-3" placeholder="my-app" value={specifications.selector.app} onChange={(e) => setSpec({ ...specifications, selector: { ...specifications.selector, app: e.target.value } } )} />
                                   </div>
                                 </div>
                               </div>
@@ -470,13 +495,13 @@ const [api, setAPI] = useState("");
                                 <div id="collapsePorts" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                   <div className="accordion-body">
                                     <strong>Name</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="http" />
+                                    <input type="text" className="form-control mb-3" placeholder="http"  value={specifications.ports.name} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, name: e.target.value } })} />
                                     <strong>Protocol</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="TCP" />
+                                    <input type="text" className="form-control mb-3" placeholder="TCP" value={specifications.ports.protocol} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, protocol: e.target.value } })} />
                                     <strong>Port</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="80" />
+                                    <input type="text" className="form-control mb-3" placeholder="80" value={specifications.ports.port} onChange={(e) => setSpec({ ...specifications, ports: { ...specifications.ports, port: e.target.value } })}/>
                                     <strong>Target Port</strong>
-                                    <input type="text" className="form-control mb-3" placeholder="8080" />
+                                    <input type="text" className="form-control mb-3" placeholder="8080"  value={specifications.ports.port} onChange={(e) => setSpec({...specifications, ports: { ...specifications.ports, targetPort: e.target.value }})} />
                                   </div>
                                 </div>
                               </div>
@@ -494,19 +519,19 @@ const [api, setAPI] = useState("");
                           <div id="collapseAdvanced" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Load Balancer IP</strong>
-                              <input type="text" className="form-control mb-3" placeholder="192.2.3.100" />
+                              <input type="text" className="form-control mb-3" placeholder="192.2.3.100" value={loadBalancer} onChange={(e) => setLoadBalancer(e.target.value)} />
                               <strong>External Traffic Policy</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={externalIPPolicy} onChange={(e) => setExternalIPPolicy(e.target.value)} >
                                 <option value="Local">Local</option>
                                 <option value="Cluster">Cluster</option>
                               </select>
                               <strong>Session Affinity</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={sessionAffinity} onChange={(e) => setSessionAffinity(e.target.value)}>
                                 <option value="None">None</option>
                                 <option value="ClientIP">ClientIP</option>
                               </select>
                               <strong>IP Family Policy</strong>
-                              <select className="form-select mb-3">
+                              <select className="form-select mb-3" value={IPFamilyPolicy} onChange={(e) => setIPFamilyPolicy(e.target.value)} >
                                 <option value="SingleStack">SingleStack</option>
                                 <option value="PreferDualStack">PreferDualStack</option>
                                 <option value="RequireDualStack">RequireDualStack</option>
@@ -518,7 +543,8 @@ const [api, setAPI] = useState("");
                                     type="checkbox"
                                     className="form-check-input"
                                     id="ipv4"
-                                    value="IPv4"
+                                    value={IPv4}
+                                    onChange = {(e) => setIPv4(e.target.checked)}
                                     defaultChecked
                                   />
                                   <label className="form-check-label" htmlFor="ipv4">
@@ -530,7 +556,8 @@ const [api, setAPI] = useState("");
                                     type="checkbox"
                                     className="form-check-input"
                                     id="ipv6"
-                                    value="IPv6"
+                                    value={IPv6}
+                                    onChange = {(e) => setIPv6(e.target.checked)}
                                   />
                                   <label className="form-check-label" htmlFor="ipv6">
                                     IPv6
