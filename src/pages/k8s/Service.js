@@ -11,7 +11,7 @@ function Service() {
 
   const handleCopy = () => {
   navigator.clipboard.writeText().then(() => {
-    alert("Dockerfile content copied to clipboard!");
+    alert("Service.yml content copied to clipboard!");
   });
 };
 
@@ -26,7 +26,7 @@ const handleDownload = () => {
 };
 
 const [api, setAPI] = useState("");
-const [kind, setKind] = useState("");
+const [kind, setKind] = useState("Service");
 const [name, setName] = useState("");
 const [namespace, setNamespace] = useState("");
 const [labels, setLabels] = useState({ app: "", env: "", tier: "" });
@@ -499,7 +499,7 @@ ${loadBalancer ? `  loadBalancerClass: ${loadBalancer}` : ''}
                           <div id="collapseSpecifications" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                             <div className="accordion-body">
                               <strong>Type</strong>
-                              <input type="text" className="form-control mb-3" placeholder="LoadBalancer" value="LoadBalancer" value={specifications.type} onChange={(e) => setSpec({ ...specifications, type: e.target.value })}  readOnly />
+                              <input type="text" className="form-control mb-3" placeholder="LoadBalancer" value={specifications.type = "LoadBalancer"} onChange={(e) => setSpec({ ...specifications, type: e.target.value })}  readOnly />
 
                               {/* Selector */}
                               <div className="accordion-item">
@@ -626,12 +626,20 @@ ${loadBalancer ? `  loadBalancerClass: ${loadBalancer}` : ''}
       <div className="preview">
         <textarea
           className="form-control"
-          rows="20"
+          rows="40"
+          cols="60"
           value={serviceYaml}
           readOnly
         ></textarea>
       </div>
-
+      
+      <div className="cmds">
+        <h5>Commands</h5>
+        <div className="cmd bg-light mb-4 align-content-center " style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl apply -f service.yaml</div>
+        <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl get services</div>
+        <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl describe service myservice</div>
+        <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl delete service myservice</div>
+      </div>
       
     </div>
     </div>
