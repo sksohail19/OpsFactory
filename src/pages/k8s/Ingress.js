@@ -1,12 +1,68 @@
 import React, { useState } from 'react';
 import yaml from "js-yaml";
 
+
 function Ingress() {
 const handleCopy = () => {
-  navigator.clipboard.writeText().then(() => {
-    alert("Ingress.yml content copied to clipboard!");
-  });
+  // Generate YAML using the same logic as the ingress constant
+  const isNumericPort = (port) => port && !isNaN(parseInt(port)) && isFinite(port);
+  
+  const groupedRules = rules.reduce((acc, rule) => {
+    const hostKey = rule.host || '""';
+    if (!acc[hostKey]) acc[hostKey] = [];
+    acc[hostKey].push(rule);
+    return acc;
+  }, {});
+
+  const yamlContent = `
+apiVersion: ${api}
+kind: ${kind}
+metadata:
+  name: ${name}
+  namespace: ${namespace}
+  labels:
+    app: ${labels.app}
+    env: ${labels.env}
+    tier: ${labels.tier}
+  annotations:
+${annotations.filter(a => a.key).map(a => `    ${a.key}: "${a.value}"`).join('\n')}
+spec:
+${secret && hosts.some(h => h.host) ? `  tls:
+  - hosts:
+${hosts.filter(h => h.host).map(h => `    - ${h.host}`).join('\n')}
+    secretName: ${secret}
+` : ''}  rules:
+${Object.entries(groupedRules).map(([host, pathRules]) => `  - host: ${host}
+    http:
+      paths:
+      ${pathRules.map(rule => `      - path: ${rule.path}
+          pathType: ${rule.pathType}
+          backend:
+            service:
+              name: ${rule.backend}
+              port:
+                ${isNumericPort(rule.backendPort) ? `number: ${rule.backendPort}` : `name: ${rule.backendPort}`}
+`).join('')}`).join('')}
+${defaultBackend ? `  defaultBackend:
+    service:
+      name: ${defaultBackend}
+      port:
+        ${isNumericPort(defaultBackendPort) ? `number: ${defaultBackendPort}` : `name: ${defaultBackendPort}`}
+` : ''}`.trim();
+
+  if (!yamlContent || yamlContent.includes('""') || yamlContent.includes('undefined')) {
+    alert("YAML content is incomplete. Please fill all required fields.");
+    return;
+  }
+
+  navigator.clipboard.writeText(yamlContent)
+    .then(() => alert("Ingress.yml content copied to clipboard!"))
+    .catch((err) => console.error("Copy failed:", err));
 };
+
+
+
+
 const [yamlOutput, setYamlOutput] = useState("");
 const handleDownload = () => {
   const blob = new Blob([], { type: "text/plain;charset=utf-8" });
@@ -21,6 +77,7 @@ const handleDownload = () => {
 const [api, setAPI] = useState("");
 const [kind, setKind] = useState("Ingress");
 const [annotations, setAnnotations] = useState([{ key: "", value: "" }]);
+const [secret, setSecret] = useState("");
 
 const handleChange = (index, field, value) => {
     const updatedAnnotations = [...annotations];
@@ -67,75 +124,52 @@ const [hosts, setHosts] = useState([{ host: "" }]);
   const [namespace, setNamespace] = useState("");
   const [labels, setLables] = useState({ app: "", env: "", tier: "" });
 
-   const generateYaml = () => {
-  const annotationsMap = {};
-  annotations.forEach(({ key, value }) => {
-    if (key) annotationsMap[key] = value;
-  });
+  // Helper function to determine port type
+const isNumericPort = (port) => port && !isNaN(parseInt(port)) && isFinite(port)
 
-  const labelMap = {};
-  if (labels.app) labelMap["app"] = labels.app;
-  if (labels.env) labelMap["environment"] = labels.env;
-  if (labels.tier) labelMap["tier"] = labels.tier;
+// Group rules by host for correct YAML structure
+const groupedRules = rules.reduce((acc, rule) => {
+  const hostKey = rule.host || '""'; // Handle empty host
+  if (!acc[hostKey]) acc[hostKey] = []
+  acc[hostKey].push(rule)
+  return acc
+}, {})
 
-  const ruleMap = [];
-
-  const groupedByHost = rules.reduce((acc, rule) => {
-    if (!acc[rule.host]) acc[rule.host] = [];
-    acc[rule.host].push({
-      path: rule.path,
-      pathType: rule.pathType,
-      backend: {
-        service: {
-          name: rule.backend,
-          port: isNaN(rule.backendPort)
-            ? { name: rule.backendPort }
-            : { number: parseInt(rule.backendPort) },
-        },
-      },
-    });
-    return acc;
-  }, {});
-
-  for (const host in groupedByHost) {
-    ruleMap.push({
-      host,
-      http: {
-        paths: groupedByHost[host],
-      },
-    });
-  }
-
-  const ingress = {
-    apiVersion: api || "networking.k8s.io/v1",
-    kind: kind || "Ingress",
-    metadata: {
-      name,
-      namespace,
-      labels: labelMap,
-      annotations: annotationsMap,
-    },
-    spec: {
-      ingressClassName: "nginx",
-      rules: ruleMap,
-      ...(defaultBackend && defaultBackendPort
-        ? {
-            defaultBackend: {
-              service: {
-                name: defaultBackend,
-                port: isNaN(defaultBackendPort)
-                  ? { name: defaultBackendPort }
-                  : { number: parseInt(defaultBackendPort) },
-              },
-            },
-          }
-        : {}),
-    },
-  };
-
-  const yamlContent = yaml.dump(ingress);
-  setYamlOutput(yamlContent); // Store the YAML to show in the UI
-};
+const ingress = `
+apiVersion: ${api}
+kind: ${kind}
+metadata:
+  name: ${name}
+  namespace: ${namespace}
+  labels:
+    app: ${labels.app}
+    env: ${labels.env}
+    tier: ${labels.tier}
+  annotations:
+${annotations.filter(a => a.key).map(a => `    ${a.key}: "${a.value}"`).join('\n')}
+spec:
+${secret && hosts.some(h => h.host) ? `  tls:
+  - hosts:
+${hosts.filter(h => h.host).map(h => `    - ${h.host}`).join('\n')}
+    secretName: ${secret}
+` : ''}  rules:
+${Object.entries(groupedRules).map(([host, pathRules]) => `  - host: ${host}
+    http:
+      paths:
+      ${pathRules.map(rule => `      - path: ${rule.path}
+          pathType: ${rule.pathType}
+          backend:
+            service:
+              name: ${rule.backend}
+              port:
+                ${isNumericPort(rule.backendPort) ? `number: ${rule.backendPort}` : `name: ${rule.backendPort}`}
+`).join('')}`).join('')}
+${defaultBackend ? `  defaultBackend:
+    service:
+      name: ${defaultBackend}
+      port:
+        ${isNumericPort(defaultBackendPort) ? `number: ${defaultBackendPort}` : `name: ${defaultBackendPort}`}
+` : ''}`
 
 
 
@@ -270,11 +304,18 @@ const [hosts, setHosts] = useState([{ host: "" }]);
                                         handleHostChange(index, "host", e.target.value)
                                       }
                                     />
+                                    <strong>Secret</strong>
+                                    <input
+                                      type="text"
+                                      placeholder="secret"
+                                      className="form-control mb-3"
+                                      value={secret}
+                                      onChange={(e) => setSecret(e.target.value)}
+                                    />
                                   </div>
                                 ))}
-                                <strong>Secret</strong>
-                                <input type="text" placeholder="secret" clasName="form-control mb-3"/>
-                                <button 
+
+                                <button
                                   className="btn btn-primary"
                                   onClick={addHost}
                                   type="button"
@@ -282,6 +323,7 @@ const [hosts, setHosts] = useState([{ host: "" }]);
                                   Add Host
                                 </button>
                               </div>
+
                             </div>
                           </div>
 
@@ -388,7 +430,7 @@ const [hosts, setHosts] = useState([{ host: "" }]);
 
 
           <div className="controls d-flex justify-content-center mt-3 p-3 gap-5">
-            <button className="btn btn-primary" type="button" onClick={generateYaml}>
+            <button className="btn btn-primary" type="button" >
               Generate YAML
             </button>
             <button type="button" onClick={handleCopy} className="btn btn-outline-secondary me-2">
@@ -404,15 +446,15 @@ const [hosts, setHosts] = useState([{ host: "" }]);
             <textarea name="form-control mb-4" id=""
             rows="30"
             cols= "30" 
-            value={yamlOutput}
+            value={ingress}
             readOnly></textarea>
           </div>
           <div className="cmds">
             <h5>Commands</h5>
-            <div className="cmd bg-light mb-4 align-content-center " style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl apply -f service.yaml</div>
-            <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl get services</div>
-            <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl describe service myservice</div>
-            <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl delete service myservice</div>
+            <div className="cmd bg-light mb-4 align-content-center " style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl apply -f ingress.yaml</div>
+            <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl get ingress -n {namespace}</div>
+            <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl describe ingress {name} -n {namespace}</div>
+            <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl logs -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx</div>
           </div>
         </div>
         
