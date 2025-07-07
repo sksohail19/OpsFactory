@@ -71,6 +71,7 @@ const copyToClipboard = () => {
 
   return (
     <>
+      <h1>Secret.yml File Generator</h1>
       <div className="container">
         <div className="data">
           <div className="details bg-light">
