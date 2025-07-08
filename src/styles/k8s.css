@@ -25,45 +25,73 @@
 
 .parent {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     gap: 8px;
-    width: 100%;
-    max-width: 950px;
+    width: 950px;
+    height: 70vh;
     margin: 0 auto;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
+/* Grid positioning */
 .div1 {
-    grid-column: span 2;
-    grid-row: span 2;
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
 }
 
 .div2 {
-    grid-column: span 2;
-    grid-row: span 2;
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
 }
 
-.div3,
-.div4,
+.div3 {
+    grid-column-start: 5;
+}
+
+.div4 {
+    grid-column-start: 5;
+    grid-row-start: 2;
+}
+
 .div5,
 .div6,
 .div7,
 .div8,
-.div9,
-.div10,
-.div11,
-.div12,
-.div13,
-.div14,
-.div15 {
-    grid-column: span 1;
+.div9 {
+    grid-row-start: 3;
 }
 
-/* Responsive Overrides */
-@media (max-width: 768px) {
+.div10,
+.div11,
+.div12 {
+    grid-row-start: 4;
+}
+
+.div13 {
+    grid-column: span 2 / span 2;
+    grid-row-start: 4;
+}
+
+.div14 {
+    grid-column: span 3 / span 3;
+    grid-row-start: 5;
+}
+
+.div15 {
+    grid-column: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 5;
+}
+
+/* ✅ Responsive only on screens smaller than 1024px */
+@media (max-width: 1024px) {
     .parent {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-rows: auto;
+        width: 100%;
+        height: auto;
+        padding: 10px;
     }
 
     .div1,
@@ -72,24 +100,22 @@
     .div14,
     .div15 {
         grid-column: span 2;
+        grid-row: auto;
     }
 
-    .preview textarea {
-        font-size: 12px;
+    .child {
+        font-size: 14px;
     }
 }
 
-@media (max-width: 480px) {
+/* Mobile-specific tweaks */
+@media (max-width: 600px) {
     .parent {
         grid-template-columns: 1fr;
     }
 
-    .div1,
-    .div2,
-    .div13,
-    .div14,
-    .div15 {
-        grid-column: span 1;
+    .child {
+        font-size: 13px;
     }
 }
 
