@@ -6,8 +6,8 @@ import {
   Typography
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import dockerComposeImg from '../assets/docker-compose.png';
-import "../styles/docker.css";
+import dockerComposeImg from '../../assets/docker-compose.png';
+import "../../styles/docker.css";
 
 function DockerCompose({ mode }) {
   const bgColor = mode === "dark" ? "bg-dark" : "light-theme";

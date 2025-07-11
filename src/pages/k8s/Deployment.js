@@ -245,8 +245,9 @@ const handleDownload = () => {
   return (
     <>
     <h1 className="mb-3 mt-3 text-center">Deployment Generator</h1>
-      <div className="holder">
-        <div className="data bg-light">
+    <p className="text-center ">Generate a Kubernetes Deployment configuration file</p>
+      <div className="container">
+        <div className="data mt-3 bg-light">
           <div className="accordion" id="accordionExample">
             <div className="accordion-item">
               <h2 className="accordion-header">
@@ -1393,8 +1394,9 @@ const handleDownload = () => {
           <div className="preview">
             <textarea
               readOnly
-              rows="40"
-              cols="50"
+              rows="100"
+              cols="100"
+              className="form-control"
               value={deployment}
               >
 
@@ -1402,19 +1404,19 @@ const handleDownload = () => {
           </div>
           <div className="cmds">
             <h5>Commands</h5>
-            <div className="cmd bg-light mb-4 align-content-center " style={{width: "450px", height: "40px", textAlign: "center", borderRadius: "8px"}}>
+            <div className="cmd bg-light mb-4 align-content-center " style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>
               kubectl apply -f deployment.yaml
             </div>
-            <div className="cmd bg-light mb-4 align-content-center" style={{width: "450px", height: "100px", textAlign: "center", borderRadius: "8px"}}>
+            <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "100px", textAlign: "center", borderRadius: "8px"}}>
               kubectl get deployments <br />
               kubectl get pods <br />
               kubectl describe deployment deployment-name <br />
               kubectl logs pod-name <br />
             </div>
-            <div className="cmd bg-light mb-4 align-content-center" style={{width: "450px", height: "40px", textAlign: "center", borderRadius: "8px"}}>
+            <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>
               kubectl apply -f deployment.yaml --dry-run=client
             </div>
-            <div className="cmd bg-light mb-4 align-content-center" style={{width: "450px", height: "40px", textAlign: "center", borderRadius: "8px"}}>
+            <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>
               kubectl delete deployment deployment-name
             </div>
           </div>

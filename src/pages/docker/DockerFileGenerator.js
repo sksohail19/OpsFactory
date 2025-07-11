@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import '../styles/docker.css';
+import '../../styles/docker.css';
 import { Link } from 'react-router-dom';
-import dockerCompose from '../assets/docker-compose.png';
-import dockerfile from '../assets/docker-logo.png';
+import dockerCompose from '../../assets/docker-compose.png';
+import dockerfile from '../../assets/docker-logo.png';
 function DockerFileGenerator(mode) {
  /* const bgColor = mode === "dark" ? "bg-dark" : "bg-light";
   const textColor = mode === "dark" ? "text-light" : "text-dark"; */

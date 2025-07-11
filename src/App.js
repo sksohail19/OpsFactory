@@ -1,12 +1,12 @@
 import './App.css';
-import SplashScreen from './components/SplashScreen';
+
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { useState, useEffect } from 'react';
 import Home from './pages/home';
-import Docker from './pages/Docker';
-import DockerFileGenerator from './pages/DockerFileGenerator';
-import DockerCompose from "./pages/DockerCompose";
+import Docker from './pages/docker/Docker';
+import DockerFileGenerator from './pages/docker/DockerFileGenerator';
+import DockerCompose from "./pages/docker/DockerCompose";
 import Kubernetes from './pages/Kubernetes';
 import Ansible from './pages/Ansible';
 import Terraform from './pages/Terraform';

@@ -76,9 +76,9 @@ ${loadBalancer ? `  loadBalancerClass: ${loadBalancer}` : ''}
   return (
     <>
     <h1 className="display-4 text-center ">Kubernetes Service Generator</h1>
-      <h4 className="text-center display-4 mb-5">Service</h4>
-    <div className="holding d-flex justify-content-center ">
-    <div className={`${bgColor} ${textColor} kubernetes-holder`}>
+      <h4 className="text-center mb-5">Generate a service.yml file</h4>
+    <div className="container d-flex justify-content-center ">
+    <div className={`${bgColor} ${textColor} data`}>
       
 
       <div className="accordion bg-light align-items-center m-5" id="accordionExample">
@@ -622,12 +622,12 @@ ${loadBalancer ? `  loadBalancerClass: ${loadBalancer}` : ''}
       </div>
     </div>
 
-    <div className="result mt-5 w-10">
-      <div className="preview">
+    <div className="result">
+      <div className="preview  p-3">
         <textarea
           className="form-control"
-          rows="40"
-          cols="60"
+          rows="100"
+          cols="100"
           value={serviceYaml}
           readOnly
         ></textarea>
@@ -635,10 +635,10 @@ ${loadBalancer ? `  loadBalancerClass: ${loadBalancer}` : ''}
       
       <div className="cmds">
         <h5>Commands</h5>
-        <div className="cmd bg-light mb-4 align-content-center " style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl apply -f service.yaml</div>
-        <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl get services</div>
-        <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl describe service myservice</div>
-        <div className="cmd bg-light mb-4 align-content-center" style={{width: "250px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl delete service myservice</div>
+        <div className="cmd bg-light mb-4 align-content-center " style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl apply -f service.yaml</div>
+        <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl get services</div>
+        <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl describe service myservice</div>
+        <div className="cmd bg-light mb-4 align-content-center" style={{width: "550px", height: "40px", textAlign: "center", borderRadius: "8px"}}>kubectl delete service myservice</div>
       </div>
       
     </div>

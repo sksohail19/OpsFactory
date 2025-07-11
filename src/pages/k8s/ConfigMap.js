@@ -249,7 +249,7 @@ binaryData:
               rows="100"
               cols="100"
               value={configMap} readOnly
-              className="form-control bg-light"
+              className="form-control"
             ></textarea>
           </div>
           <div className="cmds">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/docker.css";
+import "../../styles/docker.css";
 
 export default function Docker({ mode }) {
   const bgColor = mode === "dark" ? "bg-dark" : "bg-light";
