@@ -4,7 +4,7 @@ import "../styles/jenkins.css";
 export default function Jenkins() {
     const copyToClipboard = () => {
     navigator.clipboard.writeText(jenkins).then(() => {
-      alert("Config Map YAML copied to clipboard!");
+      alert("Jenkins YAML copied to clipboard!");
     });
   };
   
