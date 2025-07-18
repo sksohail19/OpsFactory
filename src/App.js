@@ -10,6 +10,9 @@ import DockerCompose from "./pages/docker/DockerCompose";
 import Kubernetes from './pages/Kubernetes';
 import Ansible from './pages/Ansible';
 import Terraform from './pages/Terraform';
+import AWS from "./pages/terraform/AWS";
+import GCP from "./pages/terraform/GCP";
+import Azure from "./pages/terraform/Azure";
 import Jenkins from './pages/Jenkins';
 import Contact from './pages/Contact';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -42,6 +45,7 @@ function App() {
 
   const themeClass = mode === "dark" ? "light-theme" : "dark-theme";
 
+
   
 
   return (
@@ -72,8 +76,12 @@ function App() {
           <Route path="/features/k8s/hpa" element={<HPA mode={mode} />} />
           <Route path="/features/ansible" element={<Ansible mode={mode} />} />
           <Route path="/features/terraform" element={<Terraform mode={mode} />} />
+          <Route path="/feartures/terraform/aws" element={<AWS mode={mode} />} />
+          <Route path="/features/terraform/azure" element={<Azure />} />
+          <Route path="/features/terraform/gcp" element={<GCP />} />
           <Route path="/features/jenkins" element={<Jenkins mode={mode} />} />
           <Route path="/contact" element={<Contact mode={mode} />} />
+          
         </Routes>
         <Footer mode={mode} />
       </Router>
