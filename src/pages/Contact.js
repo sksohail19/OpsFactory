@@ -11,10 +11,10 @@ const Contact = () => {
     setIsSubmitting(true);
 
     emailjs.sendForm(
-      'service_lbozzrn',
-      'template_ooxhrbm',
+      process.env.REACT_APP_SERVICE,
+      process.env.REACT_APP_TEMPLATE,
       form.current,
-      'KSLBfNI5NEVgBSdhy'
+      process.env.REACT_APP_API_KEY
     ).then(
       () => {
         setIsSubmitting(false);
