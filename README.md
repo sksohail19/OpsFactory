@@ -1,6 +1,28 @@
 # DevOps_Files_Generator
+#**Overview**
+The Ops Factory is a web-based application that generates configuration files for various DevOps tools and technologies. The application provides a user-friendly interface to input parameters and generate files for different use cases.
 
-Directory structure:
+#**Features**
+- Generates configuration files for:
+    - Docker (Dockerfiles)
+    - Kubernetes (deployment YAML files)
+    - Jenkins (Jenkinsfiles)
+    - GitHub Actions (workflow YAML files)
+    - Terraform (infrastructure configuration files)
+    - Ansible (playbook YAML files)
+    - Nginx (configuration files)
+- Provides a form-based interface to input parameters for each file type
+- Allows users to download or copy the generated files
+- Includes a success message feature to notify users of successful file generation
+
+**Technical Details**
+- Built using HTML, CSS, and JavaScript
+- Utilizes CSS variables for theming and styling
+- Employs JavaScript functions to generate files based on user input
+- Includes a template engine to generate files with dynamic content
+
+```
+#**Directory structure**:
     ├── LICENSE
     ├── README.md
     ├── index.html
@@ -57,28 +79,7 @@ Directory structure:
     │       ├── navbar.css
     │       └── variables.css
     └── styles.css
-
-#**Overview**
-The Ops Factory is a web-based application that generates configuration files for various DevOps tools and technologies. The application provides a user-friendly interface to input parameters and generate files for different use cases.
-
-#**Features**
-- Generates configuration files for:
-    - Docker (Dockerfiles)
-    - Kubernetes (deployment YAML files)
-    - Jenkins (Jenkinsfiles)
-    - GitHub Actions (workflow YAML files)
-    - Terraform (infrastructure configuration files)
-    - Ansible (playbook YAML files)
-    - Nginx (configuration files)
-- Provides a form-based interface to input parameters for each file type
-- Allows users to download or copy the generated files
-- Includes a success message feature to notify users of successful file generation
-
-**Technical Details**
-- Built using HTML, CSS, and JavaScript
-- Utilizes CSS variables for theming and styling
-- Employs JavaScript functions to generate files based on user input
-- Includes a template engine to generate files with dynamic content
+```
 
 #**Getting Started**
 1. Clone the repository using git clone https://github.com/your-username/devops-file-generator.git

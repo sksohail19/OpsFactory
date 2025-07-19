@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../styles/home.css";
+import Contact from "./Contact";
 
 function Home({ mode }) {
   const themeClass = mode === "dark" ? "dark-theme" : "light-theme";
@@ -91,72 +92,8 @@ function Home({ mode }) {
         </div>
       </section>
 
-      <section id="contactme">
-        <h2>Contact Me</h2>
-        <div className="links">
-          <div className="social-links">
-            <a href="mailto:your@email.com" title="Email">
-              <img
-                width="24"
-                height="24"
-                loading="lazy"
-                src={
-                  mode === "dark"
-                    ? "https://img.icons8.com/ios-filled/50/FFFFFF/mail.png"
-                    : "https://img.icons8.com/material-outlined/24/mail.png"
-                }
-                alt="Email icon"
-              />
-            </a>
-          </div>
-
-          <div className="social-links">
-            <a
-              href="https://www.linkedin.com/in/sksohail19/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="LinkedIn"
-            >
-              <img
-                loading="lazy"
-                width="24"
-                height="24"
-                src="https://img.icons8.com/fluency/24/linkedin.png"
-                alt="LinkedIn icon"
-              />
-            </a>
-          </div>
-
-          <div className="social-links">
-            <a
-              href="https://wa.me/919392764775"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="WhatsApp"
-            >
-              <img
-                loading="lazy"
-                src="https://img.icons8.com/color/24/000000/whatsapp--v1.png"
-                alt="WhatsApp icon"
-              />
-            </a>
-          </div>
-
-          <div className="social-links">
-            <a href="tel:+919392764775" title="Phone">
-              <img
-                loading="lazy"
-                src={
-                  mode === "dark"
-                    ? "https://img.icons8.com/ios-filled/24/FFFFFF/voicemail.png"
-                    : "https://img.icons8.com/ios-filled/24/1A1A1A/voicemail.png"
-                }
-                alt="Phone icon"
-              />
-            </a>
-          </div>
-        </div>
-      </section>
+      
+      <Contact />
     </div>
   );
 }

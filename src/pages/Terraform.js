@@ -10,7 +10,7 @@ export default function Terraform() {
                 <h1 className="title text-center mb-3 mt-3">Terraform</h1>
                 <p className="text-center mb-2">Generate Terraform configuration files for your DevOps workflows</p>
                 <p className="text-center mb-3">Features</p>
-            <div className={`${bgColor} ${textColor} container`}>
+            <div className={`${bgColor} ${textColor} terraform-container`}>
 
                 
                 <div class="parent">
