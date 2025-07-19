@@ -22,7 +22,7 @@ The Ops Factory is a web-based application that generates configuration files fo
 - Includes a template engine to generate files with dynamic content
 
 ```
-#**Directory structure**:
+Directory structure:
     ├── LICENSE
     ├── README.md
     ├── index.html
